@@ -4,6 +4,9 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require('mongoose');
+require('dotenv').config();
+
+var dbConnection  = require('./DAL/base.repo-mongoose')
 //routers
 var productsRouter = require("./routes/products");
 var usersRouter = require("./routes/users");
@@ -11,14 +14,14 @@ var dashborderRouter = require("./routes/dashbord")
 var  indexRouter = require("./routes/index");
 var userGraphQLRouter = require("./routes/graphQL-router/user-router")
 var authGraphQLRouter = require("./routes/graphQL-router/auth-router")
-
+//express
 var app = express();
-//connected to mongoose
-mongoose.connect('mongodb://localhost:27017/Skillas-test',{useNewUrlParser:true})
-mongoose.connection.once('open',()=>{
-    console.log('mongoose connected!');
+//connected to database with mongoose
+dbConnection((err, connection)=>{
+  if(err) throw err;
+  else if(connection)
+  console.log('mongoose connected!')
 })
-
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
